@@ -21,7 +21,6 @@ You should have received a copy of the GNU General Public License
 along with XBMC SoundCloud Plugin.  If not, see <http://www.gnu.org/licenses/>.
 '''
 import sys
-import httplib2
 import urllib
 import simplejson as json
 import urlparse
@@ -136,7 +135,7 @@ class SoundCloudClient(object):
         #using httplib2
         #h = httplib2.Http(disable_ssl_certificate_validation=True)
         #response, content = h.request(url, 'POST', urldata,
-                                         headers={'Content-type': 'application/x-www-form-urlencoded'})
+        #                                 headers={'Content-type': 'application/x-www-form-urlencoded'})
 
         #qs = dict(urlparse.parse_qs(response['location']))
         #self.common.log("New Login " + qs.get(REDURI + "?#access_token")[0])
