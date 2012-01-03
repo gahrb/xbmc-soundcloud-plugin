@@ -128,19 +128,19 @@ class SoundCloudClient(object):
         urldata = urllib.urlencode(urlparams)
 
         #using parseDOM 0.9.1
-        #result = self.common.fetchPage({"link": url,"post_data": urlparams})
-        #qs = dict(urlparse.parse_qs(result["new_url"]))
-        #self.common.log("New Login " + qs.get(REDURI + "?#access_token")[0])
-        #return qs.get(REDURI + "?#access_token")[0]
-        
-        #using httplib2
-        h = httplib2.Http(disable_ssl_certificate_validation=True)
-        response, content = h.request(url, 'POST', urldata,
-                                         headers={'Content-type': 'application/x-www-form-urlencoded'})
-
-        qs = dict(urlparse.parse_qs(response['location']))
+        result = self.common.fetchPage({"link": url,"post_data": urlparams})
+        qs = dict(urlparse.parse_qs(result["new_url"]))
         self.common.log("New Login " + qs.get(REDURI + "?#access_token")[0])
         return qs.get(REDURI + "?#access_token")[0]
+        
+        #using httplib2
+        #h = httplib2.Http(disable_ssl_certificate_validation=True)
+        #response, content = h.request(url, 'POST', urldata,
+                                         headers={'Content-type': 'application/x-www-form-urlencoded'})
+
+        #qs = dict(urlparse.parse_qs(response['location']))
+        #self.common.log("New Login " + qs.get(REDURI + "?#access_token")[0])
+        #return qs.get(REDURI + "?#access_token")[0]
 
 #AUTHENTICATED ACCESS
 
@@ -294,9 +294,9 @@ class SoundCloudClient(object):
     
     def _http_get_json(self,url):
         #parseDOM 0.9.1
-        #result = self.common.fetchPage({"link": url})
+        result = self.common.fetchPage({"link": url})
         #parseDOM 0.9.0
-        result = self.common._fetchPage({"link": url})
+        #result = self.common._fetchPage({"link": url})
         if result["status"] != 200:
             raise RuntimeError('Error')
         
