@@ -27,14 +27,14 @@ import xbmcsc.client as client
 import urllib
 from xbmcsc.client import SoundCloudClient
 
-dbg = True # Set to false if you don't want debugging
-dbglevel = 3 # Do NOT change from 3
+#dbg = True # Set to false if you don't want debugging
+#dbglevel = 3 # Do NOT change from 3
 
 import CommonFunctions as common
 
 common.plugin = "SoundCloud"
-#common.dbg = True
-#common.dbglevel = 5
+common.dbg = True
+common.dbglevel = 5
 
 # plugin related constants
 PLUGIN_URL = u'plugin://music/SoundCloud/'

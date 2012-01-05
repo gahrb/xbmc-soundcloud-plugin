@@ -25,9 +25,6 @@ import urllib
 import simplejson as json
 import urlparse
 
-dbg = True # Set to false if you don't want debugging
-dbglevel = 3 # Do NOT change from 3
-
 # SoundCloud application consumer key.
 CONSUMER_KEY = "91c61ef4dbc96933eff93325b5d5183e"
 CLIENT_ID_VALUE = CONSUMER_KEY
@@ -116,30 +113,19 @@ class SoundCloudClient(object):
         #<input id="display" type="hidden" value="popup" name="display">
         #<input id="username" class="title" type="text" name="username" maxlength="255">
         #<input id="password" class="title" type="password" name="password">
-
         urlparams = {CLIENT_ID_KEY: CLIENT_ID_VALUE,
                    REDIRECTURI: REDURI,
                    RESPONSETYPE: TOKEN,
                    SCOPE: NONE_EXPIRY,
-                   DISPLAY: POPUP,
                    USERNAME_KEY: self.username,
                    PASSWORD_KEY: self.password}
-        urldata = urllib.urlencode(urlparams)
+        self.common.log(url)
 
-        #using parseDOM 0.9.1
         result = self.common.fetchPage({"link": url,"post_data": urlparams})
+        self.common.log(result["new_url"])
         qs = dict(urlparse.parse_qs(result["new_url"]))
         self.common.log("New Login " + qs.get(REDURI + "?#access_token")[0])
         return qs.get(REDURI + "?#access_token")[0]
-        
-        #using httplib2
-        #h = httplib2.Http(disable_ssl_certificate_validation=True)
-        #response, content = h.request(url, 'POST', urldata,
-        #                                 headers={'Content-type': 'application/x-www-form-urlencoded'})
-
-        #qs = dict(urlparse.parse_qs(response['location']))
-        #self.common.log("New Login " + qs.get(REDURI + "?#access_token")[0])
-        #return qs.get(REDURI + "?#access_token")[0]
 
 #AUTHENTICATED ACCESS
 
