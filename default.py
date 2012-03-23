@@ -25,6 +25,7 @@ import sys
 import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 import xbmcsc.client as client
 import urllib
+
 from xbmcsc.client import SoundCloudClient
 
 #dbg = True # Set to false if you don't want debugging
@@ -35,6 +36,15 @@ import CommonFunctions as common
 common.plugin = "SoundCloud"
 common.dbg = True
 common.dbglevel = 5
+    # Note pydevd module need to be copied in XBMC\system\python\Lib\pysrc
+    try:
+        import pysrc.pydevd as pydevd
+    # stdoutToServer and stderrToServer redirect stdout and stderr to eclipse console
+        pydevd.settrace('localhost', stdoutToServer=True, stderrToServer=True)
+    except ImportError:
+        sys.stderr.write("Error: " +
+            "You must add org.python.pydev.debug.pysrc to your PYTHONPATH.")
+        sys.exit(1)
 
 # plugin related constants
 PLUGIN_URL = u'plugin://music/SoundCloud/'

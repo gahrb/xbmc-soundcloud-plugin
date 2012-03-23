@@ -26,10 +26,9 @@ import simplejson as json
 import urlparse
 
 # SoundCloud application consumer key.
-CONSUMER_KEY = "91c61ef4dbc96933eff93325b5d5183e"
+CONSUMER_KEY = "hijuflqxoOqzLdtr6W4NA"
 CLIENT_ID_VALUE = CONSUMER_KEY
-CLIENT_SECRET_VALUE = "7d782a25f125696162a05f03d1a2df23"
-REDURI = "http://www.google.be"
+REDURI = "plugin://plugin.audio.soundcloud/oauth_callback"
 LOGINURL = "https://soundcloud.com/connect/login"
 
 GRANT_TYPE_PASSWORD_VALUE = u'password'
@@ -107,16 +106,18 @@ class SoundCloudClient(object):
         #params =
         #<form id="oauth2-login-form" class="authorize-client log-in existing-user authorize-token throbberform" method="post" action="/connect/login">
         #<input id="client_id" type="hidden" value="91c61ef4dbc96933eff93325b5d5183e" name="client_id">
-        #<input id="redirect_uri" type="hidden" value="http://www.google.be" name="redirect_uri">
+        #<input id="redirect_uri" type="hidden" value=""plugin://plugin.audio.soundcloud/oauth_callback"" name="redirect_uri">
         #<input id="response_type" type="hidden" value="token" name="response_type">
         #<input id="scope" type="hidden" value="non-expiring" name="scope">
         #<input id="display" type="hidden" value="popup" name="display">
         #<input id="username" class="title" type="text" name="username" maxlength="255">
         #<input id="password" class="title" type="password" name="password">
+
         urlparams = {CLIENT_ID_KEY: CLIENT_ID_VALUE,
                    REDIRECTURI: REDURI,
                    RESPONSETYPE: TOKEN,
                    SCOPE: NONE_EXPIRY,
+                   DISPLAY: POPUP,
                    USERNAME_KEY: self.username,
                    PASSWORD_KEY: self.password}
         self.common.log(url)
@@ -277,10 +278,12 @@ class SoundCloudClient(object):
         url = '%susers/%s/%s.%s?%s' % (base, user_permalink, resource_type, format, str(urllib.urlencode(parameters)))
         return url
     
+    def _http_get_json(self, url):
+        h = httplib2.Http(disable_ssl_certificate_validation=True)
     def _http_get_json(self,url):
         #parseDOM 0.9.1
         result = self.common.fetchPage({"link": url})
-        #parseDOM 0.9.0
+        if resp.status == 401:
         #result = self.common._fetchPage({"link": url})
         if result["status"] != 200:
             raise RuntimeError('Error')
