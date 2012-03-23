@@ -122,7 +122,8 @@ class SoundCloudClient(object):
                    PASSWORD_KEY: self.password}
         self.common.log(url)
 
-        result = self.common.fetchPage({"link": url,"post_data": urlparams})
+        result = self.common.fetchPage({"link": url,"post_data": urlparams,"refering":"http://soundcloud.com"})
+        self.common.log(result["status"])
         self.common.log(result["new_url"])
         qs = dict(urlparse.parse_qs(result["new_url"]))
         self.common.log("New Login " + qs.get(REDURI + "?#access_token")[0])
@@ -283,11 +284,7 @@ class SoundCloudClient(object):
     def _http_get_json(self,url):
         #parseDOM 0.9.1
         result = self.common.fetchPage({"link": url})
-        if resp.status == 401:
-        #result = self.common._fetchPage({"link": url})
         if result["status"] != 200:
             raise RuntimeError('Error')
         
         return json.loads(result["content"])
-
-    
