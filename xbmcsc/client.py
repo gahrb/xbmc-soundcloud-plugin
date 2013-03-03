@@ -135,6 +135,11 @@ class SoundCloudClient(object):
         url = self._build_query_url(base='https://api.soundcloud.com/', resource_type="me/favorites", parameters={ QUERY_OAUTH_TOKEN: self.oauth_token, QUERY_FILTER: TRACK_STREAMABLE, QUERY_OFFSET: offset, QUERY_LIMIT: limit, QUERY_ORDER: "hotness"})
         return self._get_tracks(url)
 
+    def get_sets_tracks(self, offset, limit, mode, plugin_url):
+        ''' Return a list of sets by the current user, based on the specified parameters.  login only'''
+        url = self._build_query_url(base='https://api.soundcloud.com/', resource_type="me/playlists", parameters={ QUERY_OAUTH_TOKEN: self.oauth_token, QUERY_FILTER: TRACK_STREAMABLE, QUERY_OFFSET: offset, QUERY_LIMIT: limit, QUERY_ORDER: "hotness"})
+        return self._get_tracks(url)
+        
     def get_own_tracks(self, offset, limit, mode, plugin_url):
         ''' Return a list of tracks favorited by the current user, based on the specified parameters.  login only'''
         url = self._build_query_url(base='https://api.soundcloud.com/', resource_type="me/tracks", parameters={ QUERY_OAUTH_TOKEN: self.oauth_token, QUERY_FILTER: TRACK_STREAMABLE, QUERY_OFFSET: offset, QUERY_LIMIT: limit, QUERY_ORDER: "hotness"})

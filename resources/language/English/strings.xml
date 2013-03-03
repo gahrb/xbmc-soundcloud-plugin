@@ -2,7 +2,7 @@
 <strings>
 	<!-- * Common Strings -->
 	<string id="0">Groups</string>
-	<string id="2">Favorites</string>
+	<string id="2">Likes</string>
 	<string id="3">Search</string>
 	<string id="4">Hottest</string>
 	<string id="5">Tracks</string>
@@ -14,6 +14,7 @@
 	<string id="11">People</string>
 	<string id="12">Own Tracks</string>
 	<string id="13">You</string>
+	<string id="29">Sets</string>
 		    
 	<!-- * Script Settings -->
     <string id="22">Logon on SoundCloud</string>
