@@ -76,6 +76,7 @@ QUERY_Q = 'q'
 QUERY_ORDER = 'order'
 QUERY_OAUTH_TOKEN = 'oauth_token'
 QUERY_CURSOR = 'cursor'
+SET_TRACKS = 'tracks'
 
 class SoundCloudClient(object):
     ''' SoundCloud client to handle all communication with the SoundCloud REST API. '''
@@ -138,7 +139,7 @@ class SoundCloudClient(object):
     def get_sets_tracks(self, offset, limit, mode, plugin_url):
         ''' Return a list of sets by the current user, based on the specified parameters.  login only'''
         url = self._build_query_url(base='https://api.soundcloud.com/', resource_type="me/playlists", parameters={ QUERY_OAUTH_TOKEN: self.oauth_token, QUERY_FILTER: TRACK_STREAMABLE, QUERY_OFFSET: offset, QUERY_LIMIT: limit, QUERY_ORDER: "hotness"})
-        return self._get_tracks(url)
+        return self._get_sets(url)
         
     def get_own_tracks(self, offset, limit, mode, plugin_url):
         ''' Return a list of tracks favorited by the current user, based on the specified parameters.  login only'''
@@ -252,6 +253,30 @@ class SoundCloudClient(object):
             tracks.append({ TRACK_TITLE: json_entry[TRACK_TITLE], TRACK_STREAM_URL: json_entry.get(TRACK_STREAM_URL, ""), TRACK_ARTWORK_URL: thumbnail_url, TRACK_PERMALINK: json_entry[TRACK_PERMALINK], TRACK_ID: json_entry[TRACK_ID] })
 
         return tracks
+        
+    def _get_sets(self, url):
+        ''' Return a list of sets'''
+        json_content = self._http_get_json(url)
+        sets = []
+        for json_entry in json_content:
+            if TRACK_ARTWORK_URL in json_entry and json_entry[TRACK_ARTWORK_URL]:
+                thumbnail_url = json_entry[TRACK_ARTWORK_URL]
+            else:
+                thumbnail_url = json_entry[TRACK_USER].get(USER_AVATAR_URL)
+
+            tracks = []
+            for track_entry in json_entry[SET_TRACKS]:
+            	if TRACK_ARTWORK_URL in track_entry and track_entry[TRACK_ARTWORK_URL]:
+                	track_thumbnail_url = track_entry[TRACK_ARTWORK_URL]
+            	else:
+                	track_thumbnail_url = track_entry[TRACK_USER].get(USER_AVATAR_URL)
+                	
+            	tracks.append({ TRACK_TITLE: track_entry[TRACK_TITLE], TRACK_STREAM_URL: track_entry.get(TRACK_STREAM_URL, ""), TRACK_ARTWORK_URL: track_thumbnail_url, TRACK_PERMALINK: track_entry[TRACK_PERMALINK], TRACK_ID: track_entry[TRACK_ID] })
+            
+            
+            sets.append({ TRACK_TITLE: json_entry[TRACK_TITLE], TRACK_STREAM_URL: json_entry.get(TRACK_STREAM_URL, ""), TRACK_ARTWORK_URL: thumbnail_url, TRACK_PERMALINK: json_entry[TRACK_PERMALINK], SET_TRACKS: tracks, TRACK_ID: json_entry[TRACK_ID] })
+
+        return sets
 
     def _get_users(self, url):
         ''' Return a list of users'''
